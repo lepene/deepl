@@ -1,4 +1,4 @@
-""" Traduction avec les Apis du site www.deepl.com """
+""" Classe qui traduis du texte avec les Apis du site www.deepl.com """
 
 import sys
 import requests
@@ -32,19 +32,21 @@ réponse json
 class Deepl:
     def __init__(self):
         super(Deepl, self).__init__()
-        self.urlDeepl = "https://api.deepl.com/v2/translate"
         self.auth_key = "ac3f95a0-eb04-8064-867c-ded3eb95f373"
+        self.url_deepl = "https://api.deepl.com/v2/"
+        self.url_traduc_deepl = f"{self.url_deepl}translate?auth_key={self.auth_key}"
+        self.url_infos_compte = f"{self.url_deepl}usage?auth_key={self.auth_key}"
         self.source = "en"
         self.cible = "fr"
 
     def traduire(self, source):
         txt = urllib.parse.quote(source)
-        url = f"{self.auth_key}?auth_key={self.auth_key}&text={txt}&source_lang={self.source}&target_lang={self.cible}"
+        url = f"{self.url_traduc_deepl}&text={txt}&source_lang={self.source}&target_lang={self.cible}"
         req1 = requests.get(url)
         return req1.json()['translations'][0]['text']
 
     def infos(self):
-        req = requests.get(f"https://api.deepl.com/v1/usage?auth_key={self.auth_key}")
+        req = requests.get(self.url_infos_compte)
         return req.json()
 
 
